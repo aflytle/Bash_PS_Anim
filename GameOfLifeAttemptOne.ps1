@@ -1,17 +1,21 @@
 #GameOfLifeAttemptOne
 
 #testing out the printing properties
-$a = New-Object 'object[,]' 3,3
-$b = @(1,2,3)
-$c = @(@(1,2,3),@(4,5,6),@(7,8,9))
-echo $a
-echo $b
-$c[1] -join ' '
+# vvv so this is all for debugging vvv
+# $a = New-Object 'object[,]' 3,3
+# $b = @(1,2,3)
+# $c = @(@(1,2,3),@(4,5,6),@(7,8,9))
+# echo $a
+# echo $b
+# $c[1] -join ' '
+
+
 
 #FUNCTIONS
 
 #Boundaries must be zero; adding ghost boundary values
-function Boundary-Assignment ($lifeArray) {
+function Boundary-Assignment ($lifeArray) 
+{
     for ($i = 0; $i -lt $lifeArray.Length; $i++)
     {
         for ($j = 0; $j -lt $lifeArray.Length; $j++)
@@ -42,15 +46,42 @@ function Initialize-Life-Array($m)
     return $arr1
 }
 
+#parses line of function in color, to color 1s and 0s
+function Write-Colorized-Line($arrLine)
+{
+    #$colors2 = Yellow
+    #$colors1 = Blue
+    for ($i = 0; $i -lt ($arrLine.Length - 1); $i++)
+    {
+        switch ($arrLine[$i])
+        {
+            0 {Write-Host ($arrLine[$i].ToString() + " ") -ForegroundColor Blue -NoNewLine}
+            1 {Write-Host ($arrLine[$i].ToString() + " ") -ForegroundColor Yellow -NoNewLine}
+
+        }
+    }
+    switch ($arrLine[$arrLine.Length - 1])
+    {
+        0 {Write-Host ($arrLine[$arrLine.Length - 1].ToString() + " ") -ForegroundColor Blue}
+        1 {Write-Host ($arrLine[$arrLine.Length - 1].ToString() + " ") -ForegroundColor Yellow}
+
+    }
+
+} 
+
 #function to display array
-function Display-Life-Array($arr1){
+function Display-Life-Array($arr1)
+{
     for($i = 0; $i -lt $arr1.Length; $i++){
-        $arr1[$i] -join ' '
+        Write-Colorized-Line($arr1[$i])
+        #$arr1[$i] -join ' '
+        #Write-Host $arr1[$i] -Foreground $Color[$arr1[$i]] -NoNewLine
     }
 }
 
 #function to update the arrays
-function Update-Life-Array($arr1){
+function Update-Life-Array($arr1)
+{
     $arr2 = $arr1
     for ($i = 1; $i -lt ($arr1.Length - 1); $i++)
     {
@@ -92,10 +123,30 @@ function Update-Life-Array($arr1){
 #Main Loop
 
 # vvv Magic variable for now vvv
-$n = 10
+# function Get-Array-Size{
+#     $n = Read-Host -Prompt "enter an array size between 4 and 25"
+#     $n = $n.ToInt
+#     if ($n -le 4)
+#     {
+#         $n = 4
+#     }
+#     elseif ($n -ge 25)
+#     {
+#         $n = 25
+#     }
+#     else
+#     {
+#         $n = $n.ToInt
+#     }
+#     return $n
+# }
 
-$lifeOne = Initialize-Life-Array($n)
-while(1){
+# $m = Get-Array-Size
+$m = Read-Host -Prompt "enter an array size between 4 and 25"
+$lifeOne = Initialize-Life-Array($m)
+#$lifeOne
+while(1)
+{
     Clear
     Display-Life-Array($lifeOne)
     $lifeOne = Update-Life-Array($lifeOne)
